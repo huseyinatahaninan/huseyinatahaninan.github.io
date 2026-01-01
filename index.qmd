@@ -1,7 +1,8 @@
 ---
-title: "mywebsite"
+title: "Huseyin Atahan Inan"
+page-layout: full
 ---
 
-This is a Quarto website.
+## About
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+TBD
