@@ -6,6 +6,16 @@
   max-height: 200px;
 }
 
+/* Homepage left column: center photo and its icon row together */
+.home-sidebar .column:first-child > p {
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.home-sidebar .column:first-child > p img {
+  display: inline-block;
+}
+
 .profile-links {
   margin-top: 0.5rem;
 }

@@ -3,7 +3,7 @@ title: "Huseyin Atahan Inan"
 page-layout: full
 ---
 
-::: {.columns}
+::: {.columns .home-sidebar}
 ::: {.column width="20%"}
 ![](assets/profile.jpg){width=180px .rounded-circle}
 
