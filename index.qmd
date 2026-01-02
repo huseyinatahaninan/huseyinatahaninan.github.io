@@ -3,6 +3,31 @@ title: "Huseyin Atahan Inan"
 page-layout: full
 ---
 
-## About
+::: {.columns}
+::: {.column width="20%"}
+![](assets/profile.jpg){width=180px .rounded-circle}
 
-TBD
+::: {.profile-links}
+<a href="mailto:huinan@microsoft.com" aria-label="Email"><i class="bi bi-envelope"></i></a>
+<a href="https://scholar.google.com/citations?user=BGN4egcAAAAJ" aria-label="Google Scholar"><i class="bi bi-mortarboard"></i></a>
+<a href="https://www.linkedin.com/in/huseyininan" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+<a href="https://x.com/HuseyinAInan" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+:::
+:::
+
+::: {.column width="80%"}
+## Research
+
+I am a **Principal Researcher at M365 Research**, where I work on designing **reinforcement learning (RL) methods for agentic large language models (LLMs)**. My current research focuses on strengthening agents’ **task-completion and decision-making capabilities**, while ensuring the **appropriate and responsible use of user data**.
+
+Previously, I contributed to **privacy-preserving machine learning (PPML)** efforts, building and optimizing LLMs for a broad range of NLP tasks with **differential privacy (DP)** at the core. Highlights include:
+
+- Modernizing the **Editor Text Predictions** model with a transformer architecture fine-tuned under differential privacy, improving predictive accuracy while reducing operational costs across all Outlook endpoints.
+- Developing **privacy-preserving synthetic data pipelines** by fine-tuning LLMs with differential privacy to generate high-quality data for classification and clustering; this work was featured in a **[Microsoft Research blog post](https://www.microsoft.com/en-us/research/blog/the-crossroads-of-innovation-and-privacy-private-synthetic-data-for-generative-ai/)**.
+
+## Education
+
+Before joining Microsoft, I received my **Ph.D. from Stanford University** in 2020, where I was advised by **Prof. Ayfer Özgür**. Prior to that, I earned my **M.Sc. from Koç University** in 2014 under the supervision of **Prof. Alper Erdoğan**, and my **B.Sc. from Boğaziçi University** in 2012.
+
+:::
+:::

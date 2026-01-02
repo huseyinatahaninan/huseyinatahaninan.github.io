@@ -4,13 +4,20 @@
     "href": "index.html",
     "title": "Huseyin Atahan Inan",
     "section": "",
-    "text": "TBD"
+    "text": "I am a Principal Researcher at M365 Research, where I work on designing reinforcement learning (RL) methods for agentic large language models (LLMs). My current research focuses on strengthening agents’ task-completion and decision-making capabilities, while ensuring the appropriate and responsible use of user data.\nPreviously, I contributed to privacy-preserving machine learning (PPML) efforts, building and optimizing LLMs for a broad range of NLP tasks with differential privacy (DP) at the core. Highlights include:\n\nModernizing the Editor Text Predictions model with a transformer architecture fine-tuned under differential privacy, improving predictive accuracy while reducing operational costs across all Outlook endpoints.\nDeveloping privacy-preserving synthetic data pipelines by fine-tuning LLMs with differential privacy to generate high-quality data for classification and clustering; this work was featured in a Microsoft Research blog post.\n\n\n\n\nBefore joining Microsoft, I received my Ph.D. from Stanford University in 2020, where I was advised by Prof. Ayfer Özgür. Prior to that, I earned my M.Sc. from Koç University in 2014 under the supervision of Prof. Alper Erdoğan, and my B.Sc. from Boğaziçi University in 2012."
   },
   {
-    "objectID": "index.html#about",
-    "href": "index.html#about",
+    "objectID": "index.html#research",
+    "href": "index.html#research",
     "title": "Huseyin Atahan Inan",
     "section": "",
-    "text": "TBD"
+    "text": "I am a Principal Researcher at M365 Research, where I work on designing reinforcement learning (RL) methods for agentic large language models (LLMs). My current research focuses on strengthening agents’ task-completion and decision-making capabilities, while ensuring the appropriate and responsible use of user data.\nPreviously, I contributed to privacy-preserving machine learning (PPML) efforts, building and optimizing LLMs for a broad range of NLP tasks with differential privacy (DP) at the core. Highlights include:\n\nModernizing the Editor Text Predictions model with a transformer architecture fine-tuned under differential privacy, improving predictive accuracy while reducing operational costs across all Outlook endpoints.\nDeveloping privacy-preserving synthetic data pipelines by fine-tuning LLMs with differential privacy to generate high-quality data for classification and clustering; this work was featured in a Microsoft Research blog post."
+  },
+  {
+    "objectID": "index.html#education",
+    "href": "index.html#education",
+    "title": "Huseyin Atahan Inan",
+    "section": "",
+    "text": "Before joining Microsoft, I received my Ph.D. from Stanford University in 2020, where I was advised by Prof. Ayfer Özgür. Prior to that, I earned my M.Sc. from Koç University in 2014 under the supervision of Prof. Alper Erdoğan, and my B.Sc. from Boğaziçi University in 2012."
   }
 ]
