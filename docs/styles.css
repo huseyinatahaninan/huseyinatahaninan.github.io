@@ -53,3 +53,26 @@
   font-size: 1.75rem;
   line-height: 1;
 }
+
+/* Post figure grids (2-up on desktop, 1-up on small screens) */
+.figure-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+@media (max-width: 575.98px) {
+  .figure-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.figure-grid figure {
+  margin: 0;
+}
+
+.figure-grid img {
+  width: 100%;
+  height: auto;
+}
