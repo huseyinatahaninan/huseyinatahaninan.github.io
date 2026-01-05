@@ -184,7 +184,7 @@ window.Quarto = {
 <section id="experimental-setting" class="level2">
 <h2 class="anchored" data-anchor-id="experimental-setting">Experimental setting</h2>
 <p>All observations in this post are based on experiments conducted using the <a href="https://github.com/stonybrooknlp/appworld">AppWorld benchmark</a>, a simulated environment designed to evaluate agentic language models on long-horizon, multi-step tasks involving real-world everyday apps and data from digital lives and activities of fictitious users.</p>
-<p>For training, I use an RL pipeline built on the awesome <a href="https://github.com/rllm-org/rllm">rllm</a> library, which supports post-training of custom agents within custom environments via reinforcement learning.</p>
+<p>For training, I use an RL pipeline built on the excellent <a href="https://github.com/rllm-org/rllm">rllm</a> library, which supports post-training of custom agents within custom environments via reinforcement learning.</p>
 </section>
 <section id="potential-sources-of-training-instability" class="level2">
 <h2 class="anchored" data-anchor-id="potential-sources-of-training-instability">Potential sources of training instability</h2>
@@ -211,7 +211,7 @@ window.Quarto = {
 <section id="retokenization-drift" class="level3">
 <h3 class="anchored" data-anchor-id="retokenization-drift">3. Retokenization drift</h3>
 <p>Another instability source that becomes particularly pronounced in long-horizon agentic settings is called retokenization drift. This phenomenon occurs when the tokenization of model-generated text during inference diverges from the tokenization used during training.</p>
-<p>This phenomenon is explained clearly in a recent blog post on agentic inference systems: <a href="https://blog.vllm.ai/2025/10/22/agent-lightning.html" class="uri">https://blog.vllm.ai/2025/10/22/agent-lightning.html</a></p>
+<p>This issue is explained clearly in a recent blog post on agentic inference systems: <a href="https://blog.vllm.ai/2025/10/22/agent-lightning.html" class="uri">https://blog.vllm.ai/2025/10/22/agent-lightning.html</a></p>
 </section>
 </section>
 <section id="directions-for-improving-stability" class="level2">
@@ -219,7 +219,7 @@ window.Quarto = {
 <p>To isolate instability sources without introducing unnecessary complexity, I start from a strong instruction-tuned base model and focus on a strictly on-policy training regime. Concretely, I initialize the agent from Qwen3-4B-Instruct-2507 and apply an on-policy variant of the GRPO algorithm. All experiments use the full training and validation splits of the AppWorld benchmark.</p>
 <section id="filtering-non-useful-trajectories" class="level3">
 <h3 class="anchored" data-anchor-id="filtering-non-useful-trajectories">Filtering non-useful trajectories</h3>
-<p>The simplest intervention I explored is filtering out non-useful trajectories before computing policy updates. Specifically, I discard trajectories where the agent either (i) exhausts the maximum number of environment steps or (ii) generates the maximum number of tokens without completing the task. This simple strategy alone gives the following results:</p>
+<p>The simplest intervention I explored is filtering out non-useful trajectories before computing policy updates. Specifically, I discard trajectories where the agent either (i) exhausts the maximum number of environment steps or (ii) generates the maximum number of tokens without completing the task. This simple strategy alone yields the following results:</p>
 <div class="figure-grid">
   <figure class="figure text-center w-100">
     <img src="figures/baseline/p1.png" class="figure-img img-fluid" alt="Actor gradient norm">
@@ -234,11 +234,11 @@ window.Quarto = {
     <figcaption class="figure-caption">Validation task completion score</figcaption>
   </figure>
 </div>
-<p>First of all, we do not observe any sudden training collapses (at least within the first 500 RL iterations). However, the gradient norms remain quite high throughout training, indicating that the training process is still rather unstable. The training mean reward gets around 0.5 and validation task completion rate is around 30% after 500 RL iterations, which is a decent but not satisfactory performance.</p>
+<p>First, we do not observe any sudden training collapses (at least within the first 500 RL iterations). However, the gradient norms remain quite high throughout training, indicating that the training process is still rather unstable. The training mean reward reaches around 0.5 and validation task completion rate is around 30% after 500 RL iterations, which is a decent but not satisfactory performance.</p>
 </section>
 <section id="retokenization-drift-mitigated-training" class="level3">
 <h3 class="anchored" data-anchor-id="retokenization-drift-mitigated-training">+ retokenization-drift mitigated training</h3>
-<p>Fortunately, with rllm v0.2.1, the retokenization drift issue has been addressed via <a href="https://github.com/rllm-org/rllm/pull/272" class="uri">https://github.com/rllm-org/rllm/pull/272</a>. If the steps are not cumulative, first differing position is identified, and the trajectory is truncated there. The user can also choose whether to keep or discard the truncated trajectory for training via the <code>filter_token_mismatch</code> flag. Let’s start with <code>filter_token_mismatch=True</code>, i.e., the default option of discarding the truncated trajectories. With both trajectory filtering and retokenization-drift mitigated training enabled, training becomes significantly more stable:</p>
+<p>With rllm v0.2.1, the retokenization drift issue has been addressed via <a href="https://github.com/rllm-org/rllm/pull/272" class="uri">https://github.com/rllm-org/rllm/pull/272</a>. If the token sequences are not cumulative, the first differing position is identified, and the trajectory is truncated at that point. Users can also choose whether to keep or discard the truncated trajectory for training via the <code>filter_token_mismatch</code> flag. I begin with <code>filter_token_mismatch=True</code>, i.e., the default option of discarding the truncated trajectories. With both trajectory filtering and retokenization-drift mitigated training enabled, training becomes significantly more stable:</p>
 <div class="figure-grid">
   <figure class="figure text-center w-100">
     <img src="figures/drift_filter/p1.png" class="figure-img img-fluid" alt="Actor gradient norm">
@@ -265,9 +265,9 @@ window.Quarto = {
     <figcaption class="figure-caption">Validation task completion score</figcaption>
   </figure>
 </div>
-<p>We observe that the gradient norms are lower than 1.0 throughout training except very few spikes. We also obtain much larger training mean reward (~0.8) and validation task completion rate (~60%) after 500 RL iterations. We get a behavior change after 300 steps where entropy, tokenization mismatch, and rollout probs diff start to increase but I don’t have a good explanation for that yet.</p>
-<p>One important question is that why there is still a non-zero tokenization mismatch even after getting token ids from vllm. The problem occurs due to the multi-step loop structure as the response token ids are detokenized to be sent to the environment and after getting the next observation, they are again tokenized for the next step generation. The mismatch occurs during this detokenization–tokenization cycle. There is some work to do within <code>rllm</code> library to keep the whole multi-step loop with token ids.</p>
-<p>Let’s also see what happens if we keep the truncated trajectories instead of discarding them by setting <code>filter_token_mismatch=False</code>:</p>
+<p>We observe that gradient norms remain below 1.0 throughout training, aside from a few isolated spikes. Training mean reward increases to around 0.8 and validation task completion rate reaches approximately 60% after 500 RL iterations. A behavior change occurs after roughly 300 iterations, where entropy, tokenization mismatch, and rollout probability differences begin to increase. At the moment, I do not have a clear explanation for this behavior.</p>
+<p>One remaining question is why a non-zero tokenization mismatch persists even when token IDs are obtained directly from vLLM. This appears to arise from the multi-step interaction loop: response token IDs are detokenized to interact with the environment and then re-tokenized when generating the next step. The mismatch occurs during this detokenization–re-tokenization cycle. Addressing this fully likely requires keeping the entire multi-step loop in token space within the <code>rllm</code> library.</p>
+<p>Finally, I explore what happens when truncated trajectories are kept rather than discarded by setting <code>filter_token_mismatch=False</code>:</p>
 <div class="figure-grid">
   <figure class="figure text-center w-100">
     <img src="figures/drift_no_filter/p1.png" class="figure-img img-fluid" alt="Actor gradient norm">
@@ -294,11 +294,11 @@ window.Quarto = {
     <figcaption class="figure-caption">Validation task completion score</figcaption>
   </figure>
 </div>
-<p>Interestingly, we observe pretty different behavior in entropy, tokenization mismatch, and rollout probs diff compared to the previous case. However, the overall training stability remains quite good, and we obtain slightly higher validation task completion rate (~61-64%) after 500 RL iterations. This suggests that even the truncated trajectories contain some useful learning signals, although further analysis is needed to fully understand their impact.</p>
+<p>Interestingly, we observe notably different behavior in entropy, tokenization mismatch, and rollout probability differences compared to the previous setting. However, overall training stability remains strong, and the validation task completion rate improves slightly to approximately 61–64% after 500 RL iterations. This suggests that even truncated trajectories may still contain useful learning signals, although further analysis is needed to fully understand their impact.</p>
 </section>
 <section id="rollout-correction-methods-for-traininginference-mismatch" class="level3">
 <h3 class="anchored" data-anchor-id="rollout-correction-methods-for-traininginference-mismatch">++ Rollout correction methods for training–inference mismatch</h3>
-<p>So far in the experiments presented, I have not applied any rollout correction methods to address training–inference mismatch. Checking rollout probs diff mean plots, we can see that there is a non-negligible mismatch between the inference and training distributions although the training stability is already significantly improved with retokenization-drift mitigated training.</p>
+<p>So far, none of the experiments presented apply rollout correction methods to explicitly address training–inference mismatch. Inspecting the rollout probability difference plots, we observe a non-negligible mismatch between inference-time and training-time distributions, even though overall training stability has improved substantially.</p>
 <p>A careful study of training–inference mismatch and rollout correction methods is left for future work, given the growing body of recent methods in this area: <a href="https://verl.readthedocs.io/en/latest/algo/rollout_corr_math.html" class="uri">https://verl.readthedocs.io/en/latest/algo/rollout_corr_math.html</a>.</p>
 
 
