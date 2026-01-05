@@ -1,0 +1,13 @@
+page-layout: article
+reading-time: true
+
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    math: katex
+
+execute:
+  freeze: auto
+  echo: false
+  warning: false

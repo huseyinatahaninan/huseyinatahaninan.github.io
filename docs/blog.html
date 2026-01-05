@@ -80,9 +80,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-date','listing-title','listing-description','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -164,9 +164,9 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Tm90ZXM=">Notes <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UmVzZWFyY2g=">Research <span class="quarto-category-count">(1)</span></div></div></div>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
@@ -196,32 +196,21 @@ window.Quarto = {
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="UmVzZWFyY2glMkNOb3Rlcw==" data-listing-date-sort="1767340800000" data-listing-file-modified-sort="1767649728648" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1354">
-<div class="thumbnail"><a href="./posts/rl-for-agentic-llms/index.html" class="no-external">
-
-<p class="card-img-top"><img src="posts/rl-for-agentic-llms/figures/baseline/p1.png" alt="Actor gradient norm"  class="thumbnail-image card-img"/></p>
-
-</a></div>
+<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1767600000000" data-listing-file-modified-sort="1767652310100" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1347">
 <div class="body">
 <h3 class="no-anchor listing-title">
-<a href="./posts/rl-for-agentic-llms/index.html" class="no-external">My First Post</a>
+<a href="./posts/rl-for-agentic-llms/index.html" class="no-external">Training Instability in Long-Horizon Agentic RL (Notes from Practice)</a>
 </h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('UmVzZWFyY2g='); return false;">Research</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Tm90ZXM='); return false;">Notes</div>
-
-</div>
 <div class="delink listing-description"><a href="./posts/rl-for-agentic-llms/index.html" class="no-external">
-<p>A short intro post and what I plan to write about.</p>
+<p>Observations and lessons from reinforcement learning experiments with long-horizon agentic LLMs.</p>
 </a></div>
 </div>
 <div class="metadata">
 <a href="./posts/rl-for-agentic-llms/index.html" class="no-external">
 <div class="listing-date">
-Jan 2, 2026
+Jan 5, 2026
 </div>
+<div class="listing-reading-time">7 min</div>
 </a>
 </div>
 </div>

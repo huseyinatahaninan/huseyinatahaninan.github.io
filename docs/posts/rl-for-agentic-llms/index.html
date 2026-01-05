@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-01-02">
-<meta name="description" content="A short intro post and what I plan to write about.">
+<meta name="dcterms.date" content="2026-01-05">
+<meta name="description" content="Observations and lessons from reinforcement learning experiments with long-horizon agentic LLMs.">
 
-<title>My First Post</title>
+<title>Training Instability in Long-Horizon Agentic RL (Notes from Practice)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -139,20 +139,10 @@ window.Quarto = {
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
-  <ul>
+  <ul class="collapse">
   <li><a href="#experimental-setting" id="toc-experimental-setting" class="nav-link active" data-scroll-target="#experimental-setting">Experimental setting</a></li>
-  <li><a href="#potential-sources-of-training-instability" id="toc-potential-sources-of-training-instability" class="nav-link" data-scroll-target="#potential-sources-of-training-instability">Potential sources of training instability</a>
-  <ul class="collapse">
-  <li><a href="#gradient-updates-from-non-useful-trajectories" id="toc-gradient-updates-from-non-useful-trajectories" class="nav-link" data-scroll-target="#gradient-updates-from-non-useful-trajectories">1. Gradient updates from non-useful trajectories</a></li>
-  <li><a href="#traininginference-mismatch" id="toc-traininginference-mismatch" class="nav-link" data-scroll-target="#traininginference-mismatch">2. Training–inference mismatch</a></li>
-  <li><a href="#retokenization-drift" id="toc-retokenization-drift" class="nav-link" data-scroll-target="#retokenization-drift">3. Retokenization drift</a></li>
-  </ul></li>
-  <li><a href="#directions-for-improving-stability" id="toc-directions-for-improving-stability" class="nav-link" data-scroll-target="#directions-for-improving-stability">Directions for improving stability</a>
-  <ul class="collapse">
-  <li><a href="#filtering-non-useful-trajectories" id="toc-filtering-non-useful-trajectories" class="nav-link" data-scroll-target="#filtering-non-useful-trajectories">Filtering non-useful trajectories</a></li>
-  <li><a href="#retokenization-drift-mitigated-training" id="toc-retokenization-drift-mitigated-training" class="nav-link" data-scroll-target="#retokenization-drift-mitigated-training">+ retokenization-drift mitigated training</a></li>
-  <li><a href="#rollout-correction-methods-for-traininginference-mismatch" id="toc-rollout-correction-methods-for-traininginference-mismatch" class="nav-link" data-scroll-target="#rollout-correction-methods-for-traininginference-mismatch">++ Rollout correction methods for training–inference mismatch</a></li>
-  </ul></li>
+  <li><a href="#potential-sources-of-training-instability" id="toc-potential-sources-of-training-instability" class="nav-link" data-scroll-target="#potential-sources-of-training-instability">Potential sources of training instability</a></li>
+  <li><a href="#directions-for-improving-stability" id="toc-directions-for-improving-stability" class="nav-link" data-scroll-target="#directions-for-improving-stability">Directions for improving stability</a></li>
   </ul>
 </nav>
     </div>
@@ -161,16 +151,12 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">My First Post</h1>
-  <div class="quarto-categories">
-    <div class="quarto-category">Research</div>
-    <div class="quarto-category">Notes</div>
-  </div>
-  </div>
+<h1 class="title">Training Instability in Long-Horizon Agentic RL (Notes from Practice)</h1>
+</div>
 
 <div>
   <div class="description">
-    A short intro post and what I plan to write about.
+    Observations and lessons from reinforcement learning experiments with long-horizon agentic LLMs.
   </div>
 </div>
 
@@ -181,7 +167,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 2, 2026</p>
+      <p class="date">January 5, 2026</p>
     </div>
   </div>
   
@@ -193,11 +179,11 @@ window.Quarto = {
 </header>
 
 
-<p>Reinforcement learning for LLMs is already a delicate process in single-step settings. In long-horizon, multi-step agentic interactions, that delicacy often turns into outright training instability. In this post, I reflect on the challenges that arise in this regime and share some of the approaches I am exploring to make training more stable. The observations in this post draw on experiments that I set up together with Lukas Wutschitz, as well as many discussions along the way.</p>
+<p>Reinforcement learning for LLMs is already a delicate process in single-step settings. In long-horizon, multi-step agentic interactions, that delicacy often turns into outright training instability. In this post, I reflect on the challenges that arise in this regime and share some of the approaches I am exploring to make training more stable. The observations in this post draw on experiments that I set up together with <strong>Lukas Wutschitz</strong>, as well as many discussions along the way.</p>
 <p><em>Note:</em> This is the first post on this blog and is intended to be an informal discussion of ongoing work. If you spot errors, have alternative interpretations, or want to discuss related ideas, I would be very happy to hear from you.</p>
 <section id="experimental-setting" class="level2">
 <h2 class="anchored" data-anchor-id="experimental-setting">Experimental setting</h2>
-<p>All observations in this post are based on experiments using the <a href="https://github.com/stonybrooknlp/appworld">AppWorld benchmark</a>, a simulated environment designed to evaluate agentic language models on long-horizon, multi-step tasks involving real-world everyday apps and data from digital lives and activities of fictitious users.</p>
+<p>All observations in this post are based on experiments conducted using the <a href="https://github.com/stonybrooknlp/appworld">AppWorld benchmark</a>, a simulated environment designed to evaluate agentic language models on long-horizon, multi-step tasks involving real-world everyday apps and data from digital lives and activities of fictitious users.</p>
 <p>For training, I use an RL pipeline built on the awesome <a href="https://github.com/rllm-org/rllm">rllm</a> library, which supports post-training of custom agents within custom environments via reinforcement learning.</p>
 </section>
 <section id="potential-sources-of-training-instability" class="level2">
@@ -313,7 +299,7 @@ window.Quarto = {
 <section id="rollout-correction-methods-for-traininginference-mismatch" class="level3">
 <h3 class="anchored" data-anchor-id="rollout-correction-methods-for-traininginference-mismatch">++ Rollout correction methods for training–inference mismatch</h3>
 <p>So far in the experiments presented, I have not applied any rollout correction methods to address training–inference mismatch. Checking rollout probs diff mean plots, we can see that there is a non-negligible mismatch between the inference and training distributions although the training stability is already significantly improved with retokenization-drift mitigated training.</p>
-<p>For now, I will leave the investigation of training–inference mismatch and associated rollout correction methods as future work. This should be an extensive study given a growing body of work on the topic: <a href="https://verl.readthedocs.io/en/latest/algo/rollout_corr_math.html" class="uri">https://verl.readthedocs.io/en/latest/algo/rollout_corr_math.html</a>.</p>
+<p>A careful study of training–inference mismatch and rollout correction methods is left for future work, given the growing body of recent methods in this area: <a href="https://verl.readthedocs.io/en/latest/algo/rollout_corr_math.html" class="uri">https://verl.readthedocs.io/en/latest/algo/rollout_corr_math.html</a>.</p>
 
 
 

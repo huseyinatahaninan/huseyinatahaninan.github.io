@@ -1,18 +1,14 @@
 ---
-title: "My First Post"
-date: 2026-01-02
-categories: [Research, Notes]
-description: "A short intro post and what I plan to write about."
-format:
-  html:
-    fig-numbering: false
+title: "Training Instability in Long-Horizon Agentic RL (Notes from Practice)"
+date: 2026-01-05
+description: "Observations and lessons from reinforcement learning experiments with long-horizon agentic LLMs."
 ---
 
 Reinforcement learning for LLMs is already a delicate process in single-step settings.
 In long-horizon, multi-step agentic interactions, that delicacy often turns into outright training instability.
 In this post, I reflect on the challenges that arise in this regime and share some of the approaches I am 
 exploring to make training more stable.
-The observations in this post draw on experiments that I set up together with Lukas Wutschitz, as well as 
+The observations in this post draw on experiments that I set up together with **Lukas Wutschitz**, as well as 
 many discussions along the way.
 
 *Note:* This is the first post on this blog and is intended to be an informal discussion of ongoing work. 
@@ -20,7 +16,7 @@ If you spot errors, have alternative interpretations, or want to discuss related
 
 ## Experimental setting
 
-All observations in this post are based on experiments using the [AppWorld benchmark](https://github.com/stonybrooknlp/appworld), 
+All observations in this post are based on experiments conducted using the [AppWorld benchmark](https://github.com/stonybrooknlp/appworld), 
 a simulated environment designed to evaluate agentic language models on long-horizon, multi-step tasks involving 
 real-world everyday apps and data from digital lives and activities of fictitious users. 
 
@@ -183,5 +179,5 @@ So far in the experiments presented, I have not applied any rollout correction m
 probs diff mean plots, we can see that there is a non-negligible mismatch between the inference and training distributions although the training 
 stability is already significantly improved with retokenization-drift mitigated training.
 
-For now, I will leave the investigation of training–inference mismatch and associated rollout correction methods as future work. 
-This should be an extensive study given a growing body of work on the topic: <https://verl.readthedocs.io/en/latest/algo/rollout_corr_math.html>.
+A careful study of training–inference mismatch and rollout correction methods is left for future work, given the growing body of recent methods 
+in this area: <https://verl.readthedocs.io/en/latest/algo/rollout_corr_math.html>.
