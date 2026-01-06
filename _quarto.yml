@@ -1,6 +1,8 @@
 project:
   type: website
   output-dir: docs
+  resources:
+    - googled388468d54a080bd.html
 
 website:
   title: ""
