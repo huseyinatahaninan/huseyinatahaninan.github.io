@@ -4,6 +4,7 @@ project:
 
 website:
   title: ""
+  site-url: "https://huseyinatahaninan.github.io"
   navbar:
     left:
       - href: index.qmd
