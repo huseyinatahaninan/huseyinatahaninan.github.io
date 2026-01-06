@@ -131,6 +131,7 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="styles.css">
+<link rel="canonical" href="https://huseyinatahaninan.github.io/blog.html">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -304,6 +305,11 @@ Jan 5, 2026
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
         }
       }
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {

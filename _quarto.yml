@@ -7,6 +7,7 @@ project:
 website:
   title: ""
   site-url: "https://huseyinatahaninan.github.io"
+  page-navigation: true
   navbar:
     left:
       - href: index.qmd
@@ -20,3 +21,6 @@ format:
     css: styles.css
     toc: true
     math: katex
+    link-external-newwindow: true
+    page-navigation: true
+    canonical-url: true
